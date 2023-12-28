@@ -3,6 +3,7 @@ import os
 import google.generativeai as genai
 from PIL import Image
 import numpy as np
+import time
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
@@ -33,7 +34,7 @@ if img_file_buffer is not None:
     img = Image.open(img_file_buffer)
 
     # Generate unique filename
-    image_path = f"captured_image_{st.session_id}.jpg"
+    image_path = f"captured_image_{int(time.time())}.jpg"
 
     # Save image to file
     img.save(image_path)
