@@ -10,15 +10,10 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel('gemini-pro-vision')
 
 def get_gemini_response(input, image_path):
-    # Load image from path
-    img = Image.open(image_path)
-    img_array = np.array(img)
-
-    if input != "":
-        response = model.generate_content([input, img_array])
-    else:
-        response = model.generate_content(img_array)
+    img = Image.open(image_path)  # Load the image
+    response = model.generate_content([input, img])  # Pass the PIL Image object
     return response.text
+
 
 st.set_page_config(page_title="Gemini Image Demo")
 
@@ -26,7 +21,7 @@ st.header("Gemini LLM Application")
 
 input = st.text_input("Input prompt: ", key="input")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+# uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 img_file_buffer = st.camera_input("Take a picture")
 
@@ -43,8 +38,8 @@ if img_file_buffer is not None:
     st.image(img, caption="Image to Analyze", use_column_width=True)
     st.write(f"Image saved as: {image_path}")
 
-elif uploaded_file is not None:
-    image_path = uploaded_file
+# elif uploaded_file is not None:
+#     image_path = uploaded_file
 
 submit = st.button("Tell me about the image")
 
